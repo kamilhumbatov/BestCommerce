@@ -1,0 +1,25 @@
+server:
+  port: 8015
+
+spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: summodern
+    password: k10091984
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+    protocol: smtp
+
+kafka:
+  boot:
+      server: localhost:9092
+  topic:
+      name: myTopic-kafkasender
+  consumer:
+    group:
+      id: myTopic-group-id

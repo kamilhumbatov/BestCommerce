@@ -19,6 +19,8 @@ spring:
         jdbc:
           time_zone: Asia/Baku
 
-app:
-  jwtSecret: bestCommerce@
-  jwtExpirationMs: 86400000
+security:
+  jwtProperties:
+       secret: bestCommerce2020
+       token-validity-in-seconds: 86400
+       token-validity-in-seconds-for-remember-me: 604800

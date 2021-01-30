@@ -6,20 +6,23 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="exam1" />
         <module name="exam3" />
+        <module name="notification" />
+        <module name="exam1" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="commerce" target="13" />
       <module name="exam1" target="13" />
       <module name="exam3" target="13" />
+      <module name="notification" target="13" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="exam1" options="-parameters" />
       <module name="exam3" options="-parameters" />
+      <module name="notification" options="-parameters" />
     </option>
   </component>
 </project>

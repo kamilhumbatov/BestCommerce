@@ -1,10 +1,10 @@
 package com.commerce.security.jwt;
 
-import com.commerce.config.AppProperties;
 import com.commerce.security.UserPrincipal;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +15,11 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class JwtTokenProvider {
 
-    private final AppProperties appProperties;
+    @Value("${security.jwtProperties.secret}")
+    private String secret;
+
+    @Value("${security.jwtProperties.token-validity}")
+    private String tokenValidity;
 
     public String generateJwtToken(Authentication authentication) {
 
@@ -24,19 +28,18 @@ public class JwtTokenProvider {
         return Jwts.builder()
                 .setSubject((userPrincipal.getUsername()))
                 .setIssuedAt(new Date())
-                .setExpiration(new Date((new Date()).getTime() + appProperties.getJwtExpirationMs()))
-                .signWith(SignatureAlgorithm.HS512, appProperties.getJwtSecret())
+                .setExpiration(new Date((new Date()).getTime() + tokenValidity))
+                .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
     }
 
     public String getUserNameFromJwtToken(String token) {
-        return Jwts.parser().setSigningKey(
-                appProperties.getJwtSecret()).parseClaimsJws(token).getBody().getSubject();
+        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getSubject();
     }
 
     public boolean validateJwtToken(String authToken) {
         try {
-            Jwts.parser().setSigningKey(appProperties.getJwtSecret()).parseClaimsJws(authToken);
+            Jwts.parser().setSigningKey(secret).parseClaimsJws(authToken);
             return true;
         } catch (SignatureException e) {
             log.error("Invalid JWT signature: {}", e.getMessage());
