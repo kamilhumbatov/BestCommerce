@@ -1,0 +1,57 @@
+version: '3.7'
+
+services:
+
+  rabbitmq:
+    image: rabbitmq:management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    tty:
+      true
+    networks:
+      - backend
+
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    ports:
+      - 3306:3306
+    restart: always
+    environment:
+      MYSQL_DATABASE: best_commerce
+      MYSQL_USER: person
+      MYSQL_PASSWORD: 123
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - backend
+
+  exam1:
+    build: ./exam1
+    depends_on:
+      - rabbitmq
+      - mysql
+    networks:
+      - backend
+    ports:
+      - "8091:8091"
+
+  exam3:
+    build: ./exam3
+    depends_on:
+      - rabbitmq
+      - mysql
+    networks:
+      - backend
+    ports:
+      - "8093:8093"
+
+volumes:
+  db-data:
+
+networks:
+  backend:
+  back:
+    driver: bridge
