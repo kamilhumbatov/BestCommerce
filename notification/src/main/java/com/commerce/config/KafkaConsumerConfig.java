@@ -22,15 +22,14 @@ import org.springframework.kafka.support.serializer.JsonDeserializer;
 @EnableKafka
 public class KafkaConsumerConfig {
 
-    @Value("${kafka.boot.server}")
+    @Value("${spring.kafka.producer.bootstrap-servers}")
     private String kafkaServer;
 
-    @Value("${kafka.consumer.group.id}")
+    @Value("${spring.kafka.consumer.group-id}")
     private String kafkaGroupId;
 
     @Bean
     public ConsumerFactory<String, Student> consumerConfig() {
-        // TODO Auto-generated method stub
         Map<String, Object> config = new HashMap<>();
         config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaServer);
         config.put(ConsumerConfig.GROUP_ID_CONFIG, kafkaGroupId);

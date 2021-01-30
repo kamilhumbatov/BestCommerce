@@ -18,8 +18,11 @@ import java.util.Map;
 @Configuration
 public class KafkaProducerConfig {
 
-    @Value("${kafka.boot.server}")
+    @Value("${spring.kafka.consumer.bootstrap-servers}")
     private String kafkaServer;
+
+    @Value("${spring.kafka.producer.properties.retry.backoff.ms}")
+    private String kafkaServerRetry;
 
     @Bean
     public KafkaTemplate<String, String> kafkaTemplate() {
@@ -28,13 +31,11 @@ public class KafkaProducerConfig {
 
     @Bean
     public ProducerFactory<String, String> producerConfig() {
-        // TODO Auto-generated method stub
         Map<String, Object> config = new HashMap<>();
         config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaServer);
+        config.put(ProducerConfig.RETRY_BACKOFF_MS_CONFIG, kafkaServerRetry);
         config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
-        //Uncomment the below if you want to send String instead of an Object through Kafka
-        //config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         return new DefaultKafkaProducerFactory<>(config);
     }
 }

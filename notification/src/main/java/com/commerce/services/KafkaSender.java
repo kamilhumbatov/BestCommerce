@@ -19,7 +19,7 @@ public class KafkaSender {
 
     private final KafkaTemplate<String, String> kafkaTemplate;
 
-    @Value("${kafka.topic.name}")
+    @Value("${spring.kafka.topic.name}")
     private String topicName;
 
     public void sendData(Student student) {

@@ -14,12 +14,16 @@ spring:
           starttls:
             enable: true
     protocol: smtp
-
-kafka:
-  boot:
-      server: localhost:9092
-  topic:
-      name: myTopic-kafkasender
-  consumer:
-    group:
-      id: myTopic-group-id
+  kafka:
+    topic:
+      name: commerceTopic
+    producer:
+      bootstrap-servers: ${KAFKA_HOST_NAME:kafka}:9092
+      properties:
+        retry.backoff.ms: 1000
+    admin:
+      properties:
+        bootstrap.servers: ${KAFKA_HOST_NAME:kafka}:9092
+    consumer:
+      bootstrap-servers: ${KAFKA_HOST_NAME:kafka}:${KAFKA_PORT:9092}
+      group-id: notification-group-id

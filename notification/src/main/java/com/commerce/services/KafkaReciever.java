@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class KafkaReciever {
 
-    @KafkaListener(id = "1", topics = "${kafka.topic.name}", groupId = "${kafka.consumer.group.id}")
+    @KafkaListener(id = "1", topics = "${spring.kafka.topic.name}", groupId = "${spring.kafka.consumer.group-id}")
     public void recieveData(Student student) {
         log.info("Data - " + student.toString() + " recieved");
     }

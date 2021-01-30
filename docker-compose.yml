@@ -2,6 +2,32 @@ version: '3.7'
 
 services:
 
+  zookeeper:
+    image: wurstmeister/zookeeper
+    container_name: zookeeper
+    ports:
+      - 2181:2181
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - backend
+  kafka:
+    image: wurstmeister/kafka
+    ports:
+      - 9092:9092
+    networks:
+      - backend
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: kafka
+      KAFKA_CREATE_TOPICS: commerceTopic
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:${KAFKA_PORT}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - zookeeper
+
   db:
     image: mysql:5.7
     container_name: mysql
@@ -9,10 +35,10 @@ services:
       - 3306:3306
     restart: always
     environment:
-      MYSQL_DATABASE: best_commerce
-      MYSQL_USER: commerce
-      MYSQL_PASSWORD: 123
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ${DATABASE_NAME}
+      MYSQL_USER: ${DATABASE_USER}
+      MYSQL_PASSWORD: ${DATABASE_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DATABASE_ROOT_PASSWORD}
     volumes:
       - db-data:/var/lib/mysql
     networks:
@@ -22,15 +48,37 @@ services:
     build: ./exam1
     depends_on:
       - db
+      - kafka
     networks:
       - backend
     ports:
-      - "8092:8092"
+      - 8092:8092
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/best_commerce?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true
-      SPRING_DATASOURCE_USERNAME: commerce
-      SPRING_DATASOURCE_PASSWORD: 123
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:${DATABASE_PORT}/${DATABASE_NAME}?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: ${DATABASE_USER}
+      SPRING_DATASOURCE_PASSWORD: ${DATABASE_PASSWORD}
 
+  exam3:
+    build: ./exam3
+    depends_on:
+      - exam1
+    networks:
+      - backend
+    ports:
+      - 8093:8093
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:${DATABASE_PORT}/${DATABASE_NAME}?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: ${DATABASE_USER}
+      SPRING_DATASOURCE_PASSWORD: ${DATABASE_PASSWORD}
+
+  notification:
+    build: ./notification
+    depends_on:
+      - kafka
+    networks:
+      - backend
+    ports:
+      - 8095:8095
 
 volumes:
   db-data:
