@@ -1,2 +1,3 @@
-main/Exam2Application.class
-main/TestController.class
+com/commerce/config/SwaggerConfiguration.class
+com/commerce/TestController.class
+com/commerce/Exam2Application.class

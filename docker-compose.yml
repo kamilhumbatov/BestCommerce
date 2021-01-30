@@ -2,33 +2,7 @@ version: '3.7'
 
 services:
 
-  zookeeper:
-    image: wurstmeister/zookeeper
-    container_name: zookeeper
-    ports:
-      - 2181:2181
-  kafka:
-    image: wurstmeister/kafka
-    ports:
-      - 9092:9092
-    environment:
-      KAFKA_ADVERTISED_HOST_NAME: localhost
-      KAFKA_CREATE_TOPICS: "user-management-reset-password:1:1"
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-    depends_on:
-      - zookeeper
-
-  rabbitmq:
-    image: rabbitmq:management
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-    tty:
-      true
-    networks:
-      - backend
-
-  mysql:
+  db:
     image: mysql:5.7
     container_name: mysql
     ports:
@@ -36,7 +10,7 @@ services:
     restart: always
     environment:
       MYSQL_DATABASE: best_commerce
-      MYSQL_USER: person
+      MYSQL_USER: commerce
       MYSQL_PASSWORD: 123
       MYSQL_ROOT_PASSWORD: root
     volumes:
@@ -47,22 +21,16 @@ services:
   exam1:
     build: ./exam1
     depends_on:
-      - rabbitmq
-      - mysql
+      - db
     networks:
       - backend
     ports:
-      - "8091:8091"
+      - "8092:8092"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/best_commerce?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: commerce
+      SPRING_DATASOURCE_PASSWORD: 123
 
-  exam3:
-    build: ./exam3
-    depends_on:
-      - rabbitmq
-      - mysql
-    networks:
-      - backend
-    ports:
-      - "8093:8093"
 
 volumes:
   db-data:

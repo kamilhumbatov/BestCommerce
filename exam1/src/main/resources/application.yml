@@ -1,13 +1,13 @@
 server:
-  port: 8011
+  port: 8092
 
 spring:
   main:
     banner-mode: off
   datasource:
     url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/best_commerce?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true
-    username: root
-    password: root
+    username: commerce
+    password: 123
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     generate-ddl: true
@@ -22,5 +22,5 @@ spring:
 security:
   jwtProperties:
        secret: bestCommerce2020
-       token-validity-in-seconds: 86400
-       token-validity-in-seconds-for-remember-me: 604800
+       token-validity: 86400
+       token-validity-for-remember-me: 604800
