@@ -44,6 +44,20 @@ services:
     networks:
       - backend
 
+  sign:
+    build: ./sign
+    depends_on:
+      - db
+      - kafka
+    networks:
+      - backend
+    ports:
+      - 8093:8093
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:${DATABASE_PORT}/${DATABASE_NAME}?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: ${DATABASE_USER}
+      SPRING_DATASOURCE_PASSWORD: ${DATABASE_PASSWORD}
+
   products:
     build: ./products
     depends_on:
@@ -53,19 +67,6 @@ services:
       - backend
     ports:
       - 8092:8092
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://db:${DATABASE_PORT}/${DATABASE_NAME}?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true
-      SPRING_DATASOURCE_USERNAME: ${DATABASE_USER}
-      SPRING_DATASOURCE_PASSWORD: ${DATABASE_PASSWORD}
-
-  sign:
-    build: ./sign
-    depends_on:
-      - exam1
-    networks:
-      - backend
-    ports:
-      - 8093:8093
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://db:${DATABASE_PORT}/${DATABASE_NAME}?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true
       SPRING_DATASOURCE_USERNAME: ${DATABASE_USER}

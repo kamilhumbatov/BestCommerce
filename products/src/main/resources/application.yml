@@ -22,5 +22,5 @@ spring:
 security:
   jwtProperties:
        secret: bestCommerce2020
-       token-validity: 86400
-       token-validity-for-remember-me: 604800
+       token-validity: 604800000
+       token-validity-for-remember-me: 604800000

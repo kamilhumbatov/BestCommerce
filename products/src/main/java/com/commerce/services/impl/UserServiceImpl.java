@@ -1,9 +1,9 @@
 package com.commerce.services.impl;
 
-import com.commerce.models.User;
+import com.commerce.common.models.User;
 import com.commerce.repository.UserRepository;
-import com.commerce.services.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -20,17 +20,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Boolean existsByUsername(String username) {
-        return userRepository.existsByUsername(username);
-    }
-
-    @Override
-    public Boolean existsByEmail(String email) {
-        return userRepository.existsByEmail(email);
-    }
-
-    @Override
-    public User save(User user) {
-        return userRepository.save(user);
+    public User findByUsernameOrEmail(String usernameOrEmail) {
+        return findByUsernameOrEmail(usernameOrEmail, usernameOrEmail)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found!"));
     }
 }

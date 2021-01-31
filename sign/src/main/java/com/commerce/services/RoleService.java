@@ -1,7 +1,7 @@
 package com.commerce.services;
 
-import com.commerce.enums.RoleName;
-import com.commerce.models.Role;
+import com.commerce.common.enums.RoleName;
+import com.commerce.common.models.Role;
 
 public interface RoleService {
     Role findByName(RoleName roleName);

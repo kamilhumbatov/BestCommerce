@@ -1,6 +1,6 @@
 package com.commerce.security;
 
-import com.commerce.models.User;
+import com.commerce.common.models.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

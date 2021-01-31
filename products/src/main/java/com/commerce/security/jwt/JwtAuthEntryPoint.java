@@ -1,6 +1,6 @@
 package com.commerce.security.jwt;
 
-import com.commerce.dto.ResponseModel;
+import com.commerce.common.dto.ResponseModel;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;

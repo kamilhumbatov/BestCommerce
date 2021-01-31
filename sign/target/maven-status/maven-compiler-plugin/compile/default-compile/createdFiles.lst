@@ -1,17 +1,11 @@
 com/commerce/services/UserService.class
-com/commerce/exception/models/EmailAddressAlreadyUseException.class
 com/commerce/config/SecurityConfig.class
 com/commerce/services/impl/AuthServiceImpl.class
 com/commerce/SignApplication.class
 com/commerce/config/SwaggerConfiguration.class
 com/commerce/services/impl/UserDetailsServiceImpl.class
-com/commerce/exception/GlobalExceptionHandler.class
-com/commerce/exception/models/UsernameAlreadyTakenException.class
-com/commerce/exception/models/RolenameInvalidException.class
 com/commerce/services/AuthService.class
-com/commerce/models/User.class
 com/commerce/dto/SignUpRequest.class
-com/commerce/enums/RoleName.class
 com/commerce/security/jwt/JwtTokenProvider.class
 com/commerce/config/WebMvcConfig.class
 com/commerce/security/jwt/JwtAuthenticationFilter.class
@@ -23,9 +17,6 @@ com/commerce/services/impl/UserServiceImpl.class
 com/commerce/services/impl/RoleServiceImpl.class
 com/commerce/dto/AuthenticationResponse.class
 com/commerce/controller/AuthController.class
-com/commerce/models/Role.class
-com/commerce/models/User$UserBuilder.class
-com/commerce/exception/models/InvalidPasswordFormatException.class
 com/commerce/repository/UserRepository.class
 com/commerce/utils/PasswordValidator.class
 com/commerce/repository/RoleRepository.class

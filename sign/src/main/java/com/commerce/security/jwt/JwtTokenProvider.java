@@ -25,10 +25,11 @@ public class JwtTokenProvider {
 
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
         Date now = new Date();
+        Date expired=new Date(now.getTime() + jwtExpirationInMs);
         return Jwts.builder()
                 .setSubject((userPrincipal.getUsername()))
                 .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime() + jwtExpirationInMs))
+                .setExpiration(expired)
                 .signWith(SignatureAlgorithm.HS512, jwtSecretKey)
                 .compact();
     }
