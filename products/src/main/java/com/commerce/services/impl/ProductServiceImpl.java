@@ -1,6 +1,5 @@
 package com.commerce.services.impl;
 
-import com.commerce.common.dto.ResponsePagedModel;
 import com.commerce.common.exception.models.ProductNotFoundException;
 import com.commerce.common.exception.models.UserNotFoundException;
 import com.commerce.common.models.User;
@@ -16,9 +15,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
-import java.util.Collections;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -51,17 +47,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ResponsePagedModel<Product> allProducts(String currentUser, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "price");
-        Page<Product> products = productRepository.findAll(pageable);
-
-        if (products.getNumberOfElements() == 0) {
-            return new ResponsePagedModel<>(Collections.emptyList(), products);
-        }
-
-        List<Product> productResponse = products.map(product -> {
-            return (product);
-        }).getContent();
-        return new ResponsePagedModel<Product>(productResponse, products);
+    public Page<ProductDto> allProducts(String currentUser, int page, int size, String sortBy) {
+        User user = userService.findByUsernameOrEmail(currentUser);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        return productRepository.findAllByCreatedBy(user.getId(), pageable).map(
+                product -> productMapper.sourceToDestination(product));
     }
 }

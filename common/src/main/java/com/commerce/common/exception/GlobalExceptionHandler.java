@@ -28,7 +28,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             UserNotFoundException.class
     })
     public ResponseEntity customException(IllegalArgumentException ex) {
-        ex.printStackTrace();
+        log.error(ex.getMessage());
         return new ResponseEntity<>(ResponseModel.error(HttpStatus.BAD_REQUEST, ex.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
@@ -36,12 +36,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
                                                                   HttpHeaders headers, HttpStatus status,
                                                                   WebRequest request) {
+        log.error(ex.getMessage());
         return new ResponseEntity<>(ResponseModel.error(status, "Request body is missing"), status);
     }
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        log.error(ex.getMessage());
         return new ResponseEntity<>(ResponseModel.error(status, "Method argument not valid"), status);
     }
 }
