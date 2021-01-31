@@ -25,3 +25,4 @@ hs_err_pid*
 exam1/target/*
 exam3/target/*
 notification/target/*
+.idea/*

@@ -8,6 +8,11 @@
         <outputRelativeToContentRoot value="true" />
         <module name="exam3" />
         <module name="notification" />
+      </profile>
+      <profile name="Annotation profile for BestCommerce" enabled="true">
+        <sourceOutputDir name="../exam3/target/generated-sources/annotations" />
+        <sourceTestOutputDir name="../exam3/target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
         <module name="exam1" />
       </profile>
     </annotationProcessing>
