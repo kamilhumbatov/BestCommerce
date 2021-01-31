@@ -1,4 +1,4 @@
-package com.commerce.services.impl;
+package com.commerce.services;
 
 import com.commerce.common.models.User;
 

@@ -2,6 +2,7 @@ package com.commerce.services.impl;
 
 import com.commerce.common.models.User;
 import com.commerce.repository.UserRepository;
+import com.commerce.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;

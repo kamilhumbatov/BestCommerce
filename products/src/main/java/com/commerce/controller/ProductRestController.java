@@ -7,7 +7,7 @@ import com.commerce.dto.ProductDto;
 import com.commerce.models.Product;
 import com.commerce.security.CurrentUser;
 import com.commerce.security.UserPrincipal;
-import com.commerce.services.impl.ProductService;
+import com.commerce.services.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,14 +25,14 @@ public class ProductRestController {
     public ResponseModel<Product> findById(
             @CurrentUser UserPrincipal currentUser,
             @PathVariable long id) {
-        return ResponseModel.ok(productService.findById(currentUser, id));
+        return ResponseModel.ok(productService.findById(currentUser.getUsername(), id));
     }
 
     @PostMapping("/save")
     public ResponseModel<ProductDto> save(
             @CurrentUser UserPrincipal currentUser,
             @RequestBody ProductDto product) {
-        return ResponseModel.ok(productService.save(currentUser, product));
+        return ResponseModel.ok(productService.save(product));
     }
 
     @GetMapping("/products")
@@ -40,6 +40,6 @@ public class ProductRestController {
             @CurrentUser UserPrincipal currentUser,
             @RequestParam(value = "page", defaultValue = DEFAULT_PAGE_NUMBER) int page,
             @RequestParam(value = "size", defaultValue = DEFAULT_PAGE_SIZE) int size) {
-        return ResponseModel.ok(productService.allProducts(currentUser, page, size));
+        return ResponseModel.ok(productService.allProducts(currentUser.getUsername(), page, size));
     }
 }

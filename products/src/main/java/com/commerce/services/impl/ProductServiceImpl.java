@@ -8,7 +8,8 @@ import com.commerce.dto.ProductDto;
 import com.commerce.mapper.ProductMapper;
 import com.commerce.models.Product;
 import com.commerce.repository.ProductRepository;
-import com.commerce.security.UserPrincipal;
+import com.commerce.services.ProductService;
+import com.commerce.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,9 +24,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
+    private final UserService userService;
     private final ProductMapper productMapper;
     private final ProductRepository productRepository;
-    private final UserService userService;
 
     private Product findByIdAndUser(long id, User user) {
         return productRepository.findByIdAndCreatedBy(id, user.getId())
@@ -33,9 +34,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductDto findById(UserPrincipal currentUser, long id) {
+    public ProductDto findById(String currentUser, long id) {
         if (currentUser != null) {
-            User user = userService.findByUsernameOrEmail(currentUser.getUsername());
+            User user = userService.findByUsernameOrEmail(currentUser);
             Product product = findByIdAndUser(id, user);
             return productMapper.sourceToDestination(product);
         }
@@ -43,17 +44,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductDto save(UserPrincipal currentUser, ProductDto productDto) {
-        if (currentUser != null) {
-            Product product = productMapper.destinationToSource(productDto);
-            productRepository.save(product);
-            return productMapper.sourceToDestination(product);
-        }
-        throw new UserNotFoundException();
+    public ProductDto save(ProductDto productDto) {
+        Product product = productMapper.destinationToSource(productDto);
+        productRepository.save(product);
+        return productMapper.sourceToDestination(product);
     }
 
     @Override
-    public ResponsePagedModel<Product> allProducts(UserPrincipal currentUser, int page, int size) {
+    public ResponsePagedModel<Product> allProducts(String currentUser, int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "price");
         Page<Product> products = productRepository.findAll(pageable);
 

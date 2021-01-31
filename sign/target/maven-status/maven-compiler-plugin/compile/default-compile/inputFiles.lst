@@ -4,7 +4,6 @@
 /Users/kamil/Idea/test/BestCommerce/sign/src/main/java/com/commerce/services/impl/UserDetailsServiceImpl.java
 /Users/kamil/Idea/test/BestCommerce/sign/src/main/java/com/commerce/services/impl/RoleServiceImpl.java
 /Users/kamil/Idea/test/BestCommerce/sign/src/main/java/com/commerce/services/AuthService.java
-/Users/kamil/Idea/test/BestCommerce/sign/src/main/java/com/commerce/config/AppProperties.java
 /Users/kamil/Idea/test/BestCommerce/sign/src/main/java/com/commerce/config/WebMvcConfig.java
 /Users/kamil/Idea/test/BestCommerce/sign/src/main/java/com/commerce/repository/UserRepository.java
 /Users/kamil/Idea/test/BestCommerce/sign/src/main/java/com/commerce/security/jwt/JwtAuthenticationFilter.java
@@ -12,6 +11,7 @@
 /Users/kamil/Idea/test/BestCommerce/sign/src/main/java/com/commerce/services/RoleService.java
 /Users/kamil/Idea/test/BestCommerce/sign/src/main/java/com/commerce/services/impl/UserServiceImpl.java
 /Users/kamil/Idea/test/BestCommerce/sign/src/main/java/com/commerce/dto/SignUpRequest.java
+/Users/kamil/Idea/test/BestCommerce/sign/src/main/java/com/commerce/config/AuditingConfig.java
 /Users/kamil/Idea/test/BestCommerce/sign/src/main/java/com/commerce/config/SecurityConfig.java
 /Users/kamil/Idea/test/BestCommerce/sign/src/main/java/com/commerce/services/UserService.java
 /Users/kamil/Idea/test/BestCommerce/sign/src/main/java/com/commerce/security/UserPrincipal.java
