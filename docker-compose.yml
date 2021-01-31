@@ -44,8 +44,8 @@ services:
     networks:
       - backend
 
-  exam1:
-    build: ./exam1
+  products:
+    build: ./products
     depends_on:
       - db
       - kafka

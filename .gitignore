@@ -24,5 +24,6 @@ hs_err_pid*
 
 exam1/target/*
 sign/target/*
+products/target/*
 notification/target/*
 .idea/*

@@ -25,7 +25,9 @@ com/commerce/dto/AuthenticationResponse.class
 com/commerce/controller/AuthController.class
 com/commerce/models/Role.class
 com/commerce/models/User$UserBuilder.class
+com/commerce/exception/models/InvalidPasswordFormatException.class
 com/commerce/repository/UserRepository.class
+com/commerce/utils/PasswordValidator.class
 com/commerce/repository/RoleRepository.class
 com/commerce/dto/ResponseModel.class
 com/commerce/services/RoleService.class

@@ -4,9 +4,9 @@
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
     <modules>
-        <module>exam1</module>
         <module>notification</module>
         <module>sign</module>
+        <module>products</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

@@ -23,8 +23,10 @@
 /Users/kamil/Idea/test/BestCommerce/sign/src/main/java/com/commerce/services/AuthService.java
 /Users/kamil/Idea/test/BestCommerce/sign/src/main/java/com/commerce/exception/models/EmailAddressAlreadyUseException.java
 /Users/kamil/Idea/test/BestCommerce/sign/src/main/java/com/commerce/config/WebMvcConfig.java
+/Users/kamil/Idea/test/BestCommerce/sign/src/main/java/com/commerce/utils/PasswordValidator.java
 /Users/kamil/Idea/test/BestCommerce/sign/src/main/java/com/commerce/services/RoleService.java
 /Users/kamil/Idea/test/BestCommerce/sign/src/main/java/com/commerce/config/SecurityConfig.java
 /Users/kamil/Idea/test/BestCommerce/sign/src/main/java/com/commerce/enums/RoleName.java
+/Users/kamil/Idea/test/BestCommerce/sign/src/main/java/com/commerce/exception/models/InvalidPasswordFormatException.java
 /Users/kamil/Idea/test/BestCommerce/sign/src/main/java/com/commerce/security/jwt/JwtTokenProvider.java
 /Users/kamil/Idea/test/BestCommerce/sign/src/main/java/com/commerce/dto/ResponseModel.java

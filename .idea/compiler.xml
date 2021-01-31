@@ -7,15 +7,16 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="products" />
         <module name="sign" />
         <module name="notification" />
-        <module name="exam1" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="commerce" target="13" />
       <module name="exam1" target="13" />
       <module name="notification" target="13" />
+      <module name="products" target="13" />
       <module name="sign" target="13" />
     </bytecodeTargetLevel>
   </component>
@@ -23,6 +24,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="exam1" options="-parameters" />
       <module name="notification" options="-parameters" />
+      <module name="products" options="-parameters" />
       <module name="sign" options="-parameters" />
     </option>
   </component>
