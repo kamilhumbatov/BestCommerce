@@ -5,8 +5,8 @@
     <packaging>pom</packaging>
     <modules>
         <module>exam1</module>
-        <module>exam3</module>
         <module>notification</module>
+        <module>sign</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

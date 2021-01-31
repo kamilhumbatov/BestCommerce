@@ -1,5 +1,5 @@
 server:
-  port: 8092
+  port: 8093
 
 spring:
   main:
@@ -18,7 +18,9 @@ spring:
       hibernate:
         jdbc:
           time_zone: Asia/Baku
-
+  liquibase:
+    enabled: false
+    change-log: classpath:db/changelog/changelog-master.xml
 security:
   jwtProperties:
        secret: bestCommerce2020

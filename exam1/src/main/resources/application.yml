@@ -6,8 +6,8 @@ spring:
     banner-mode: off
   datasource:
     url: jdbc:mysql://${DATABASE_HOST:localhost}:${DATABASE_PORT:3306}/best_commerce?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true
-    username: ${DATABASE_USER:commerce}
-    password: ${DATABASE_PASSWORD:123}
+    username: ${DATABASE_USER:root}
+    password: ${DATABASE_PASSWORD:root}
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     generate-ddl: true

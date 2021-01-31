@@ -58,8 +58,8 @@ services:
       SPRING_DATASOURCE_USERNAME: ${DATABASE_USER}
       SPRING_DATASOURCE_PASSWORD: ${DATABASE_PASSWORD}
 
-  exam3:
-    build: ./exam3
+  sign:
+    build: ./sign
     depends_on:
       - exam1
     networks:

@@ -4,8 +4,9 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/commerce.iml" filepath="$PROJECT_DIR$/commerce.iml" />
       <module fileurl="file://$PROJECT_DIR$/exam1/exam1.iml" filepath="$PROJECT_DIR$/exam1/exam1.iml" />
-      <module fileurl="file://$PROJECT_DIR$/exam3/exam3.iml" filepath="$PROJECT_DIR$/exam3/exam3.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sign/exam3.iml" filepath="$PROJECT_DIR$/sign/exam3.iml" />
       <module fileurl="file://$PROJECT_DIR$/notification/notification.iml" filepath="$PROJECT_DIR$/notification/notification.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sign/sign.iml" filepath="$PROJECT_DIR$/sign/sign.iml" />
     </modules>
   </component>
 </project>
