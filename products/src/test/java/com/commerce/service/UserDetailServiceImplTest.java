@@ -2,7 +2,7 @@ package com.commerce.service;
 
 import com.commerce.common.models.User;
 import com.commerce.repository.UserRepository;
-import com.commerce.services.impl.UserServiceImpl;
+import com.commerce.services.impl.UserDetailsServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,9 +18,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(UserServiceImpl.class)
-@ContextConfiguration(classes = {UserServiceImpl.class})
-public class UserServiceImplTest {
+@WebMvcTest(UserDetailServiceImplTest.class)
+@ContextConfiguration(classes = {UserDetailServiceImplTest.class})
+public class UserDetailServiceImplTest {
 
     private static final String USERNAME = "kamil";
     private static final Long USER_ID = 5L;
@@ -31,7 +31,7 @@ public class UserServiceImplTest {
     private UserRepository userRepository;
 
     @Autowired
-    private UserServiceImpl userService;
+    private UserDetailsServiceImpl userDetailsServiceImpl;
 
     @Before
     public void setUp() {
@@ -42,15 +42,7 @@ public class UserServiceImplTest {
     public void givenUsernameOrEmail() {
         when(userRepository.findByUsernameOrEmail(USERNAME, USERNAME)).thenReturn(Optional.of(user));
 
-        assertThat(userService.findByUsernameOrEmail(USERNAME, USERNAME).isPresent()).isEqualTo(true);
-        verify(userRepository, times(1)).findByUsernameOrEmail(USERNAME, USERNAME);
-    }
-
-    @Test
-    public void givenUsernameOrEmailAsUser() {
-        when(userRepository.findByUsernameOrEmail(USERNAME, USERNAME)).thenReturn(Optional.of(user));
-
-        assertThat(userService.findByUsernameOrEmail(USERNAME).getUsername()).isEqualTo(USERNAME);
+        assertThat(userDetailsServiceImpl.loadUserByUsername(USERNAME).getUsername()).isEqualTo(USERNAME);
         verify(userRepository, times(1)).findByUsernameOrEmail(USERNAME, USERNAME);
     }
 }

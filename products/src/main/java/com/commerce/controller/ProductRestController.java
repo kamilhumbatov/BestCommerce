@@ -37,7 +37,7 @@ public class ProductRestController {
         return ResponseModel.ok(productService.save(product));
     }
 
-    @GetMapping("/products")
+    @GetMapping("/list")
     public ResponseModel<Page<ProductDto>> allProducts(
             @CurrentUser UserPrincipal currentUser,
             @RequestParam(value = "page", defaultValue = DEFAULT_PAGE_NUMBER) int page,

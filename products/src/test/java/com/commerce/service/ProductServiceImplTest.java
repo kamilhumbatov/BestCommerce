@@ -44,7 +44,6 @@ public class ProductServiceImplTest {
     private static final int PAGE_SORT_NUMBER = 1;
     private static final int PAGE_SORT_SIZE = 5;
 
-
     private User user;
     private Product product;
     private ProductDto productDto;
