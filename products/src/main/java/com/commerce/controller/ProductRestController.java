@@ -3,6 +3,7 @@ package com.commerce.controller;
 
 import com.commerce.common.dto.ResponseModel;
 import com.commerce.common.dto.ResponsePagedModel;
+import com.commerce.dto.ProductDto;
 import com.commerce.models.Product;
 import com.commerce.security.CurrentUser;
 import com.commerce.security.UserPrincipal;
@@ -28,9 +29,9 @@ public class ProductRestController {
     }
 
     @PostMapping("/save")
-    public ResponseModel<Product> save(
+    public ResponseModel<ProductDto> save(
             @CurrentUser UserPrincipal currentUser,
-            @RequestBody Product product) {
+            @RequestBody ProductDto product) {
         return ResponseModel.ok(productService.save(currentUser, product));
     }
 

@@ -4,6 +4,8 @@ import com.commerce.common.dto.ResponsePagedModel;
 import com.commerce.common.exception.models.ProductNotFoundException;
 import com.commerce.common.exception.models.UserNotFoundException;
 import com.commerce.common.models.User;
+import com.commerce.dto.ProductDto;
+import com.commerce.mapper.ProductMapper;
 import com.commerce.models.Product;
 import com.commerce.repository.ProductRepository;
 import com.commerce.security.UserPrincipal;
@@ -21,26 +23,36 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
+    private final ProductMapper productMapper;
     private final ProductRepository productRepository;
     private final UserService userService;
 
-    public Product findById(UserPrincipal currentUser, long id) {
+    private Product findByIdAndUser(long id, User user) {
+        return productRepository.findByIdAndCreatedBy(id, user.getId())
+                .orElseThrow(ProductNotFoundException::new);
+    }
+
+    @Override
+    public ProductDto findById(UserPrincipal currentUser, long id) {
         if (currentUser != null) {
             User user = userService.findByUsernameOrEmail(currentUser.getUsername());
-            return productRepository.findByIdAndUser(id, user).orElseThrow(ProductNotFoundException::new);
+            Product product = findByIdAndUser(id, user);
+            return productMapper.sourceToDestination(product);
         }
         throw new UserNotFoundException();
     }
 
-    public Product save(UserPrincipal currentUser,Product product) {
+    @Override
+    public ProductDto save(UserPrincipal currentUser, ProductDto productDto) {
         if (currentUser != null) {
-            User user = userService.findByUsernameOrEmail(currentUser.getUsername());
-            product.setUser(user);
-            return productRepository.save(product);
+            Product product = productMapper.destinationToSource(productDto);
+            productRepository.save(product);
+            return productMapper.sourceToDestination(product);
         }
         throw new UserNotFoundException();
     }
 
+    @Override
     public ResponsePagedModel<Product> allProducts(UserPrincipal currentUser, int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "price");
         Page<Product> products = productRepository.findAll(pageable);
@@ -49,7 +61,9 @@ public class ProductServiceImpl implements ProductService {
             return new ResponsePagedModel<>(Collections.emptyList(), products);
         }
 
-        List<Product> pollResponses = products.map(product -> { return product;}).getContent();
-        return new ResponsePagedModel<>(pollResponses, products);
+        List<Product> productResponse = products.map(product -> {
+            return (product);
+        }).getContent();
+        return new ResponsePagedModel<Product>(productResponse, products);
     }
 }
