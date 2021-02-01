@@ -30,7 +30,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public String authenticateUser(LoginRequest loginRequest) {
-        return tokenProvider.generateJwtToken(loginRequest.getUsernameOrEmail());
+        return tokenProvider.generateJwtToken(loginRequest);
     }
 
     @Override

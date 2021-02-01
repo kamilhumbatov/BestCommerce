@@ -21,6 +21,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({IllegalArgumentException.class,
             RolenameInvalidException.class,
+            UserOrPasswordNotMatchException.class,
             EmailAddressAlreadyUseException.class,
             UsernameAlreadyTakenException.class,
             InvalidPasswordFormatException.class,
