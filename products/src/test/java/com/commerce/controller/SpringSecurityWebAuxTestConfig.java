@@ -1,6 +1,5 @@
 package com.commerce.controller;
 
-import com.commerce.common.models.User;
 import com.commerce.security.UserPrincipal;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;

@@ -12,6 +12,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @Component
@@ -35,7 +37,10 @@ public class JwtTokenProvider {
         if (passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
             Date now = new Date();
             Date expired = new Date(now.getTime() + jwtExpirationInMs);
+            Map<String, Object> claims = new HashMap<>();
+            claims.put("id", user.getId());
             return Jwts.builder()
+                    .setClaims(claims)
                     .setSubject(user.getUsername())
                     .setIssuedAt(now)
                     .setExpiration(expired)

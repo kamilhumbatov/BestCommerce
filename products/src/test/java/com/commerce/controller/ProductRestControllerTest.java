@@ -38,6 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class ProductRestControllerTest {
 
+    private static final Long USER_ID = 5L;
     private static final String USERNAME = "kamil";
     private static final Long PRODUCT_ID = 100L;
     private static final String PAGE_SORT_SIZE = "5";
@@ -89,7 +90,7 @@ public class ProductRestControllerTest {
     @Test
     @WithUserDetails("user@bestcommerce.com")
     public void findProductById() throws Exception {
-        when(productService.findById(USERNAME,PRODUCT_ID)).thenReturn(productDto);
+        when(productService.findById(USER_ID,PRODUCT_ID)).thenReturn(productDto);
 
         mockMvc.perform(MockMvcRequestBuilders
                 .get(API_GET, PRODUCT_ID)
@@ -112,18 +113,20 @@ public class ProductRestControllerTest {
     }
 
     @Test
+    @WithUserDetails("user@bestcommerce.com")
     public void findProductByIdReturnsNotFound() throws Exception {
-        when(productService.findById(USERNAME,PRODUCT_ID)).thenThrow(new ProductNotFoundException());
+        when(productService.findById(USER_ID,PRODUCT_ID)).thenThrow(new ProductNotFoundException());
 
         mockMvc.perform(MockMvcRequestBuilders
                 .get("/product/12345")
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound())
+                .andExpect(status().isBadRequest())
                 .andExpect(jsonPath(ERROR_CODE, is(HttpStatus.BAD_REQUEST.value())))
                 .andExpect(jsonPath(ERROR_MESSAGE, CoreMatchers.is("Product not found!")));
     }
 
     @Test
+    @WithUserDetails("user@bestcommerce.com")
     public void retrieveAllProductCheckPageNumberBadRequest() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                 .get(PAGE_URL)

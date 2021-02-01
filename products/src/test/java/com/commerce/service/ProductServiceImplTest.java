@@ -6,12 +6,9 @@ import com.commerce.dto.ProductDto;
 import com.commerce.mapper.ProductMapper;
 import com.commerce.models.Product;
 import com.commerce.repository.ProductRepository;
-import com.commerce.services.UserService;
 import com.commerce.services.impl.ProductServiceImpl;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
-import com.commerce.services.impl.UserServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -49,9 +46,6 @@ public class ProductServiceImplTest {
     private ProductDto productDto;
 
     @MockBean
-    private UserService userService;
-
-    @MockBean
     private ProductMapper productMapper;
 
     @MockBean
@@ -69,11 +63,10 @@ public class ProductServiceImplTest {
 
     @Test
     public void givenIdAndUser() {
-        when(userService.findByUsernameOrEmail(USERNAME)).thenReturn(user);
         when(productRepository.findByIdAndCreatedBy(PRODUCT_ID, USER_ID)).thenReturn(Optional.of(product));
         when(productMapper.sourceToDestination(product)).thenReturn(productDto);
 
-        assertThat(productService.findById(USERNAME, PRODUCT_ID).getId()).isEqualTo(PRODUCT_ID);
+        assertThat(productService.findById(USER_ID, PRODUCT_ID).getId()).isEqualTo(PRODUCT_ID);
         verify(productRepository).findByIdAndCreatedBy(PRODUCT_ID, USER_ID);
     }
 
@@ -100,10 +93,9 @@ public class ProductServiceImplTest {
         PageRequest pageRequest = PageRequest.of(PAGE_SORT_NUMBER, PAGE_SORT_SIZE, Sort.by(Sort.Order.asc("price")));
         Page<Product> expectedProduct = new PageImpl<>(Collections.singletonList(product));
 
-        when(userService.findByUsernameOrEmail(USERNAME)).thenReturn(user);
         when(productRepository.findAllByCreatedBy(USER_ID, pageRequest)).thenReturn(expectedProduct);
 
-        Page<ProductDto> expectedProductDto =productService.allProducts(USERNAME, PAGE_SORT_NUMBER, PAGE_SORT_SIZE, "price");
+        Page<ProductDto> expectedProductDto =productService.allProducts(USER_ID, PAGE_SORT_NUMBER, PAGE_SORT_SIZE, "price");
         assertThat(expectedProductDto.getContent()).isEqualTo(expectedProductDto.getContent());
         assertThat(expectedProductDto.getTotalElements()).isEqualTo(1);
         assertThat(expectedProductDto.getTotalPages()).isEqualTo(1);
