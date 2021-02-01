@@ -23,12 +23,4 @@ public class ResponseModel<T> {
     public static <T> ResponseModel ok(T result) {
         return new ResponseModel(HttpStatus.OK.value(), "", new Date(), result);
     }
-
-    public static <T> ResponseModel error(HttpStatus httpStatus, String message) {
-        return new ResponseModel(httpStatus.value(), message, new Date(), null);
-    }
-
-    public static <T> ResponseModel unauthorized(String message) {
-        return new ResponseModel(HttpStatus.UNAUTHORIZED.value(), message, new Date(), null);
-    }
 }

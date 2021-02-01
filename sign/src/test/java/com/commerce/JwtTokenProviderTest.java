@@ -1,5 +1,7 @@
 package com.commerce;
 
+import com.commerce.common.exception.models.UserOrPasswordNotMatchException;
+import com.commerce.common.exception.models.UsernameAlreadyTakenException;
 import com.commerce.common.models.User;
 import com.commerce.dto.LoginRequest;
 import com.commerce.security.jwt.JwtTokenProvider;
@@ -10,23 +12,31 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(JwtTokenProvider.class)
-@ContextConfiguration(classes = {JwtTokenProvider.class})
+@WebAppConfiguration
+@ContextConfiguration(classes = {JwtTokenProvider.class,TestConfiguration.class})
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class JwtTokenProviderTest {
 
     private static final String USERNAME = "kamil";
     private static final String PASSWORD = "123";
     private static final Long USER_ID = 5L;
+
+    private String pass="";
 
     private User user;
     private LoginRequest loginRequest;
@@ -37,7 +47,7 @@ public class JwtTokenProviderTest {
     @MockBean
     private UserService userService;
 
-    @MockBean
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Before
@@ -51,6 +61,7 @@ public class JwtTokenProviderTest {
                 .usernameOrEmail(USERNAME)
                 .password(PASSWORD)
                 .build();
+        pass=passwordEncoder.encode(PASSWORD);
     }
 
     @Test
@@ -59,6 +70,17 @@ public class JwtTokenProviderTest {
         when(userService.findByUsernameOrEmail(USERNAME,USERNAME)).thenReturn(Optional.of(user));
 
         assertThat(jwtTokenProvider.generateJwtToken(loginRequest)).isNotEmpty();
+        verify(userService, times(1)).findByUsernameOrEmail(USERNAME,USERNAME);
+    }
+
+    @Test
+    public void shouldUserOrPasswordNotMatchException() throws Exception {
+        user.setPassword(passwordEncoder.encode(PASSWORD.concat(PASSWORD)));
+        when(userService.findByUsernameOrEmail(USERNAME,USERNAME)).thenReturn(Optional.of(user));
+
+        assertThatThrownBy(() -> jwtTokenProvider.generateJwtToken(loginRequest))
+                .isInstanceOf(UserOrPasswordNotMatchException.class)
+                .hasMessage("Username or password is wrong!");
         verify(userService, times(1)).findByUsernameOrEmail(USERNAME,USERNAME);
     }
 }

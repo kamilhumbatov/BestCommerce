@@ -2,6 +2,7 @@ package com.controller;
 
 import com.commerce.controller.AuthController;
 import com.commerce.dto.LoginRequest;
+import com.commerce.dto.SignUpRequest;
 import com.commerce.services.AuthService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,6 +18,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -25,12 +28,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class AuthControllerTest {
 
     private static final String USERNAME = "kamil";
-    private static final String PASSWORD = "123";
+    private static final String PASSWORD = "a123456";
+    private final String EMAIL = "kamil@bestcommerce.com";
 
     private static final String API_SIGNIN = "/api/auth/signin";
     private static final String API_SIGNUP = "/api/auth/signup";
+    private static final String YOUR_REGISTRATION_WAS_SUCCESSFUL = "Your registration was successful!";
 
     private LoginRequest loginRequest;
+    private SignUpRequest signUpRequest;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -47,6 +53,12 @@ public class AuthControllerTest {
                 .usernameOrEmail(USERNAME)
                 .password(PASSWORD)
                 .build();
+        signUpRequest = SignUpRequest.builder()
+                .name(USERNAME)
+                .username(USERNAME)
+                .email(EMAIL)
+                .password(PASSWORD)
+                .build();
     }
 
     @Test
@@ -60,6 +72,17 @@ public class AuthControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.result").exists());
     }
 
+    @Test
+    public void registerUser() throws Exception {
+        when(authService.registerUser(signUpRequest)).thenReturn(YOUR_REGISTRATION_WAS_SUCCESSFUL);
+        mockMvc.perform(MockMvcRequestBuilders
+                .post(API_SIGNUP)
+                .content(asJsonString(signUpRequest))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result").exists());
+    }
 
     private String asJsonString(final Object obj) throws JsonProcessingException {
         return objectMapper.writeValueAsString(obj);
