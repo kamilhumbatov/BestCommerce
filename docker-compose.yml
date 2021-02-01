@@ -80,6 +80,8 @@ services:
       - backend
     ports:
       - 8095:8095
+    environment:
+      KAFKA_HOST_NAME: ${KAFKA_HOST_NAME}
 
 volumes:
   db-data:

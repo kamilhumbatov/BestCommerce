@@ -9,6 +9,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @Data
@@ -23,6 +25,8 @@ public class Product extends UserDateAudit {
     private Long id;
     @Enumerated(EnumType.ORDINAL)
     private ProductCategory category;
+    @NotNull
+    @NotEmpty
     private String name;
     private BigDecimal price;
     private String description;
