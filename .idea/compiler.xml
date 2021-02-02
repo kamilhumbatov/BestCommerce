@@ -10,7 +10,6 @@
         <module name="common" />
         <module name="products" />
         <module name="sign" />
-        <module name="simulation" />
         <module name="notification" />
       </profile>
     </annotationProcessing>

@@ -1,6 +1,7 @@
 package com.commerce.services.impl;
 
 import com.commerce.common.enums.RoleName;
+import com.commerce.dto.UserDto;
 import com.commerce.models.User;
 import com.commerce.dto.LoginRequest;
 import com.commerce.dto.SignUpRequest;
@@ -11,6 +12,7 @@ import com.commerce.security.jwt.JwtTokenProvider;
 import com.commerce.services.AuthService;
 import com.commerce.services.RoleService;
 import com.commerce.services.UserService;
+import com.commerce.services.kafka.KafkaSender;
 import com.commerce.utils.PasswordValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,6 +29,7 @@ public class AuthServiceImpl implements AuthService {
     private final RoleService roleService;
     private final JwtTokenProvider tokenProvider;
     private final PasswordEncoder passwordEncoder;
+    private final KafkaSender kafkaSender;
 
     @Override
     public String authenticateUser(LoginRequest loginRequest) {
@@ -54,6 +57,15 @@ public class AuthServiceImpl implements AuthService {
 
 
         userService.save(user);
+        kafkaSender.sendData(convert(user));
         return YOUR_REGISTRATION_WAS_SUCCESSFUL;
+    }
+
+    private UserDto convert(User user){
+        return UserDto.builder()
+                .name(user.getName())
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .build();
     }
 }

@@ -1,8 +1,6 @@
 package com.commerce.security.jwt;
 
-import com.commerce.security.UserPrincipal;
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +10,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
-import java.security.Key;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,9 +21,6 @@ public class JwtTokenProvider {
 
     @Value("${security.jwtProperties.secret}")
     private String jwtSecretKey;
-
-    private static final String ID_KEY = "id";
-    private static final String NAME_KEY = "name";
     private static final String AUTHORITIES_KEY = "role";
 
     public Authentication getAuthentication(String token) {

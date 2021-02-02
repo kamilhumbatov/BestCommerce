@@ -1,6 +1,7 @@
-package com.commerce.services;
+package com.commerce.services.kafka;
 
 import com.commerce.dto.UserDto;
+import com.commerce.models.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,10 +24,9 @@ public class KafkaSender {
     private String topicName;
 
     public void sendData(UserDto user) {
-        // TODO Auto-generated method stub
         Map<String, Object> headers = new HashMap<>();
         headers.put(KafkaHeaders.TOPIC, topicName);
         kafkaTemplate.send(new GenericMessage<UserDto>(user, headers));
-        log.info("Data - " + user.toString() + " sent to Kafka Topic - " + topicName);
+        log.info("Data - " + user.getUsername() + " sent to Kafka Topic - " + topicName);
     }
 }

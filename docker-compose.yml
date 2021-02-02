@@ -22,7 +22,7 @@ services:
       KAFKA_ADVERTISED_HOST_NAME: kafka
       KAFKA_CREATE_TOPICS: commerceTopic
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:${KAFKA_PORT}
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:${KAFKA_PORT}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     depends_on:
@@ -80,8 +80,6 @@ services:
       - backend
     ports:
       - 8095:8095
-    environment:
-      KAFKA_HOST_NAME: ${KAFKA_HOST_NAME}
 
 volumes:
   db-data:

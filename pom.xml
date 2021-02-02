@@ -8,7 +8,6 @@
         <module>sign</module>
         <module>products</module>
         <module>common</module>
-        <module>simulation</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

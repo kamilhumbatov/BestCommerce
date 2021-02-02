@@ -8,7 +8,6 @@
       <module fileurl="file://$PROJECT_DIR$/notification/notification.iml" filepath="$PROJECT_DIR$/notification/notification.iml" />
       <module fileurl="file://$PROJECT_DIR$/products/products.iml" filepath="$PROJECT_DIR$/products/products.iml" />
       <module fileurl="file://$PROJECT_DIR$/sign/sign.iml" filepath="$PROJECT_DIR$/sign/sign.iml" />
-      <module fileurl="file://$PROJECT_DIR$/simulation/simulation.iml" filepath="$PROJECT_DIR$/simulation/simulation.iml" />
     </modules>
   </component>
 </project>

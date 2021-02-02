@@ -1,6 +1,6 @@
 package com.commerce.controller;
 
-import com.commerce.model.Student;
+import com.commerce.dto.UserDto;
 import com.commerce.services.KafkaSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,7 +18,7 @@ public class KafkaProducerController {
     private KafkaSender sender;
 
     @PostMapping
-    public ResponseEntity<String> sendData(@RequestBody Student student){
+    public ResponseEntity<String> sendData(@RequestBody UserDto student){
         sender.sendData(student);
         return new ResponseEntity<>("Data sent to Kafka", HttpStatus.OK);
     }
