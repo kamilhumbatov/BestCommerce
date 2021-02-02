@@ -8,6 +8,7 @@ import com.commerce.util.Auditor;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 
+@Slf4j
 @Api("Product API")
 @Validated
 @RestController
@@ -35,6 +37,7 @@ public class ProductRestController {
     @ApiOperation("Get product by id")
     public ResponseModel<Product> findById(
             @PathVariable @Positive(message = ID_MUST_BE_POSITIVE) long id) {
+        log.info("get product by id {}", id);
         return ResponseModel.ok(productService.findById(id));
     }
 
@@ -42,6 +45,7 @@ public class ProductRestController {
     @ApiOperation("Add new product")
     public ResponseModel<ProductDto> save(
             @Validated @RequestBody ProductDto product) {
+        log.info("save product");
         return ResponseModel.ok(productService.save(product));
     }
 
@@ -49,6 +53,7 @@ public class ProductRestController {
     @ApiOperation("Delete product by id")
     public void deleteProduct(
             @PathVariable @Positive(message = ID_MUST_BE_POSITIVE) long id) {
+        log.info("delete product by id {}", id);
         productService.deleteById(id);
     }
 
@@ -60,6 +65,7 @@ public class ProductRestController {
             @RequestParam(value = "size", defaultValue = DEFAULT_PAGE_SIZE)
             @Positive(message = PAGE_SIZE_MUST_BE_POSITIVE) int size,
             @RequestParam(value = "sort", defaultValue = DEFAULT_PAGE_SORT) String sort) {
+        log.info("get product list");
         return ResponseModel.ok(productService.allProducts(page, size, sort));
     }
 }
