@@ -15,20 +15,20 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class SignUpRequest {
 
-    @NotBlank
-    @Size(min = 4, max = 40)
+    @NotBlank(message = "Name must not be empty!")
+    @Size(min = 4, max = 40, message = "Name size must be between 4 and 40")
     private String name;
 
-    @NotBlank
-    @Size(min = 3, max = 15)
+    @NotBlank(message = "Username must not be empty!")
+    @Size(min = 3, max = 15, message = "Username size must be between 3 and 15")
     private String username;
 
-    @NotBlank
+    @NotBlank(message = "Email must not be empty!")
     @Size(max = 40)
-    @Email
+    @Email(message = "Email format invalid!")
     private String email;
 
-    @NotBlank
-    @Size(min = 6, max = 20)
+    @NotBlank(message = "Password must not be empty!")
+    @Size(min = 6, max = 20, message = "Password size must be between 6 and 20")
     private String password;
 }

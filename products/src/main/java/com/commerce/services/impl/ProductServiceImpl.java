@@ -46,6 +46,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public void deleteById(long id) {
+        findById(id);
+        productRepository.deleteById(id);
+    }
+
+    @Override
     public Page<ProductDto> allProducts(int page, int size, String sortBy) {
         String currentUser= auditor.getUserName();
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));

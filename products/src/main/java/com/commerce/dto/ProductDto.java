@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @Data
@@ -16,6 +18,8 @@ import java.math.BigDecimal;
 public class ProductDto {
     private Long id;
     private ProductCategory category;
+    @NotNull(message = "Name must not be null!")
+    @NotBlank(message = "Name must not be empty!")
     private String name;
     private BigDecimal price;
     private String description;

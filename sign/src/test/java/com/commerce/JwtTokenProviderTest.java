@@ -1,6 +1,8 @@
 package com.commerce;
 
+import com.commerce.common.enums.RoleName;
 import com.commerce.common.exception.models.UserOrPasswordNotMatchException;
+import com.commerce.models.Role;
 import com.commerce.models.User;
 import com.commerce.dto.LoginRequest;
 import com.commerce.security.jwt.JwtTokenProvider;
@@ -17,6 +19,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import java.util.Collections;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -37,6 +40,7 @@ public class JwtTokenProviderTest {
     private String pass="";
 
     private User user;
+    private Role role;
     private LoginRequest loginRequest;
 
     @Autowired
@@ -50,6 +54,9 @@ public class JwtTokenProviderTest {
 
     @Before
     public void setUp() {
+        role = new Role();
+        role.setId(1);
+        role.setName(RoleName.ROLE_MERCHANT);
         user = User.builder()
                 .id(USER_ID)
                 .username(USERNAME)
@@ -65,6 +72,7 @@ public class JwtTokenProviderTest {
     @Test
     public void shouldGenerateAuthToken() throws Exception {
         user.setPassword(passwordEncoder.encode(PASSWORD));
+        user.setRoles(Collections.singleton(role));
         when(userService.findByUsernameOrEmail(USERNAME,USERNAME)).thenReturn(Optional.of(user));
 
         assertThat(jwtTokenProvider.generateJwtToken(loginRequest)).isNotEmpty();

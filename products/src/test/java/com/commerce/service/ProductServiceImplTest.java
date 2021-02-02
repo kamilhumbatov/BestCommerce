@@ -107,4 +107,13 @@ public class ProductServiceImplTest {
         verify(productRepository).findAllByCreatedBy(USERNAME, pageRequest);
     }
 
+    @Test
+    public void deleteById(){
+        when(auditor.getUserName()).thenReturn(USERNAME);
+        when(productRepository.findByIdAndCreatedBy(PRODUCT_ID, USERNAME)).thenReturn(Optional.of(product));
+
+        productService.deleteById(PRODUCT_ID);
+        verify(productRepository).deleteById(PRODUCT_ID);
+    }
+
 }

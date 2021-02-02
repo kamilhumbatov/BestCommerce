@@ -4,7 +4,6 @@ import com.commerce.common.exception.models.ProductNotFoundException;
 import com.commerce.dto.ProductDto;
 import com.commerce.enums.PaymentOptions;
 import com.commerce.enums.ProductCategory;
-import com.commerce.models.Product;
 import com.commerce.services.ProductService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,6 +30,7 @@ import java.util.Collections;
 
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -42,7 +42,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class ProductRestControllerTest {
 
-    private static final String USERNAME = "kamil";
     private static final Long PRODUCT_ID = 100L;
     private static final String PAGE_SORT_SIZE = "5";
     private static final String PAGE_NUMBER = "page";
@@ -75,7 +74,7 @@ public class ProductRestControllerTest {
                 .paymentOptions(PaymentOptions.DIRECT)
                 .price(BigDecimal.TEN)
                 .inventory("")
-                .name("")
+                .name("Apple")
                 .description("")
                 .deliveryOptions("")
                 .category(ProductCategory.FASHION)
@@ -84,7 +83,7 @@ public class ProductRestControllerTest {
                 .paymentOptions(PaymentOptions.DIRECT)
                 .price(BigDecimal.TEN)
                 .inventory("")
-                .name("")
+                .name("Apple")
                 .description("")
                 .deliveryOptions("")
                 .category(ProductCategory.FASHION)
@@ -147,6 +146,14 @@ public class ProductRestControllerTest {
                 .andExpect(jsonPath("$.result.totalElements", is(1)))
                 .andExpect(jsonPath("$.result.totalPages", is(1)));
     }
+
+    @Test
+    @WithUserDetails("user@bestcommerce.com")
+    public void deleteProduct() throws Exception {
+        mockMvc.perform(delete(API_GET, 1))
+                .andExpect(status().isOk());
+    }
+
 
     private String asJsonString(final Object obj) throws JsonProcessingException {
         return objectMapper.writeValueAsString(obj);
