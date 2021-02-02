@@ -1,24 +1,29 @@
 # BestCommerce
 
-This is a sample Spring Boot/Maven Project with Gatling tests incorporated in build. For learning purpose.
+This is a sample Spring Boot/Maven Project.Consist of 3 microservices 
+* sign
+* products
+* notification
 
-# Run all with tests from Maven
+### Sign Service
+ Api documentation  http://localhost:8093/swagger-ui.html
+ Project runs port on port 8093
+ 
+### Products Service
+Api documentation http://localhost:8092/swagger-ui.html 
+ Project runs port on port 8092
 
-This will start the jety server and then run the performance tests :
+### Notification Service 
+This is a Message Broker Apache Kafka sends email to merchants.
+### Run project
 
-    docker-compose up
+This will start:
+
+    mvn clean package
+    docker-compose up -d
    
     
-# Run from your IDE
+### Stop th project
 
     docker-compose down --volume
 
-It is faster than from Maven because your IDE already compiled all sources.
-
-## Start the project
-
-Run the main from ```com.worldline.formation.gatling.service.Application```
-
-## Launch the gatling tests
-
-Run the main from ```com.worldline.formation.gatling.service.FibonacciSimulation```

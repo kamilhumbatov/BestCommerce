@@ -48,7 +48,7 @@ public class SwaggerConfiguration {
 
     private ApiInfo apiInfo() {
         return new ApiInfo(
-                "Best Commerce Sign Services",
+                "Best Commerce Product Services",
                 "Best Commerce System",
                 "1.0.0",
                 "",

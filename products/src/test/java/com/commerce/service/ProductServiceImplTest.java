@@ -1,5 +1,7 @@
 package com.commerce.service;
 
+import com.commerce.common.exception.models.AccessDinedProductException;
+import com.commerce.common.exception.models.ProductNotFoundException;
 import com.commerce.common.exception.models.UserNotFoundException;
 import com.commerce.dto.ProductDto;
 import com.commerce.mapper.ProductMapper;
@@ -59,16 +61,41 @@ public class ProductServiceImplTest {
     public void setUp() {
         productDto = ProductDto.builder().id(PRODUCT_ID).build();
         product = Product.builder().id(PRODUCT_ID).build();
+
+        product.setCreatedBy(USERNAME);
     }
 
     @Test
     public void givenIdAndUser() {
-        when(productRepository.findByIdAndCreatedBy(PRODUCT_ID, USERNAME)).thenReturn(Optional.of(product));
+        when(productRepository.findById(PRODUCT_ID)).thenReturn(Optional.of(product));
         when(productMapper.sourceToDestination(product)).thenReturn(productDto);
         when(auditor.getUserName()).thenReturn(USERNAME);
 
         assertThat(productService.findById(PRODUCT_ID).getId()).isEqualTo(PRODUCT_ID);
-        verify(productRepository).findByIdAndCreatedBy(PRODUCT_ID, USERNAME);
+        verify(productRepository).findById(PRODUCT_ID);
+    }
+
+    @Test
+    public void givenIdProductNotFoundException() {
+        when(auditor.getUserName()).thenReturn(USERNAME);
+        when(productRepository.findById(PRODUCT_ID)).thenThrow(new ProductNotFoundException());
+
+        assertThatThrownBy(() -> productService.findById(PRODUCT_ID))
+                .isInstanceOf(ProductNotFoundException.class)
+                .hasMessage("Product not found!");
+        verify(productRepository,times(1)).findById(PRODUCT_ID);
+    }
+
+    @Test
+    public void givenIdAccessDinedProductException() {
+        product.setCreatedBy("kamal");
+        when(auditor.getUserName()).thenReturn(USERNAME);
+        when(productRepository.findById(PRODUCT_ID)).thenReturn(Optional.of(product));
+
+        assertThatThrownBy(() -> productService.findById(PRODUCT_ID))
+                .isInstanceOf(AccessDinedProductException.class)
+                .hasMessage("You have not access to get this product!");
+        verify(productRepository,times(1)).findById(PRODUCT_ID);
     }
 
     @Test
@@ -110,7 +137,7 @@ public class ProductServiceImplTest {
     @Test
     public void deleteById(){
         when(auditor.getUserName()).thenReturn(USERNAME);
-        when(productRepository.findByIdAndCreatedBy(PRODUCT_ID, USERNAME)).thenReturn(Optional.of(product));
+        when(productRepository.findById(PRODUCT_ID)).thenReturn(Optional.of(product));
 
         productService.deleteById(PRODUCT_ID);
         verify(productRepository).deleteById(PRODUCT_ID);

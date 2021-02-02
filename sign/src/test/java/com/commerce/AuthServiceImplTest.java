@@ -12,6 +12,7 @@ import com.commerce.security.jwt.JwtTokenProvider;
 import com.commerce.services.RoleService;
 import com.commerce.services.UserService;
 import com.commerce.services.impl.AuthServiceImpl;
+import com.commerce.services.kafka.KafkaSender;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -59,6 +60,9 @@ public class AuthServiceImplTest {
 
     @MockBean
     private PasswordEncoder passwordEncoder;
+
+    @MockBean
+    private KafkaSender kafkaSender;
 
     @Before
     public void setUp() {

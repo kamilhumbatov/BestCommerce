@@ -1,5 +1,6 @@
 package com.commerce.services.impl;
 
+import com.commerce.common.exception.models.AccessDinedProductException;
 import com.commerce.common.exception.models.ProductNotFoundException;
 import com.commerce.common.exception.models.UserNotFoundException;
 import com.commerce.dto.ProductDto;
@@ -23,14 +24,22 @@ public class ProductServiceImpl implements ProductService {
     private final ProductMapper productMapper;
     private final ProductRepository productRepository;
 
-    private Product findByIdAndUser(Long id, String user) {
-        return productRepository.findByIdAndCreatedBy(id, user)
+    private Product findById(Long id) {
+        return productRepository.findById(id)
                 .orElseThrow(ProductNotFoundException::new);
+    }
+
+    private Product findByIdAndUser(Long id, String user) {
+        Product product = findById(id);
+        if (!product.getCreatedBy().equals(user)) {
+            throw new AccessDinedProductException();
+        }
+        return product;
     }
 
     @Override
     public ProductDto findById(long id) {
-        String currentUser= auditor.getUserName();
+        String currentUser = auditor.getUserName();
         if (currentUser != null) {
             Product product = findByIdAndUser(id, currentUser);
             return productMapper.sourceToDestination(product);
@@ -53,7 +62,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Page<ProductDto> allProducts(int page, int size, String sortBy) {
-        String currentUser= auditor.getUserName();
+        String currentUser = auditor.getUserName();
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
         return productRepository.findAllByCreatedBy(currentUser, pageable).map(
                 product -> productMapper.sourceToDestination(product));

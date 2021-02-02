@@ -44,7 +44,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                                                                   HttpHeaders headers, HttpStatus status,
                                                                   WebRequest request) {
         log.error(ex.getMessage());
-        return new ResponseEntity<>(ResponseModel.error(status, "Request body is missing"), status);
+        return new ResponseEntity<>(ResponseModel.error(status, "Invalid request body!"), status);
     }
 
     @Override
