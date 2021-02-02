@@ -23,7 +23,7 @@ This will start:
     docker-compose up -d
    
     
-### Stop th project
+### Stop the project
 
     docker-compose down --volume
 
