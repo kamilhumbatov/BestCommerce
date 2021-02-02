@@ -5,7 +5,7 @@ spring:
   main:
     banner-mode: off
   datasource:
-    url: jdbc:mysql://${DATABASE_HOST:localhost}:${DATABASE_PORT:3306}/best_commerce?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true
+    url: jdbc:mysql://${DATABASE_HOST:localhost}:${DATABASE_PORT:3306}/best_commerce_product?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true
     username: ${DATABASE_USER:root}
     password: ${DATABASE_PASSWORD:root}
   jpa:
@@ -21,6 +21,6 @@ spring:
 
 security:
   jwtProperties:
-       secret: bestCommerce2020
+       secret: n2r5u8x/A%D*G-KaPdSgVkYp3s6v9y$B&E(H+MbQeThWmZq4t7w!z%C*F-J@NcRf
        token-validity: 43200000
        token-validity-for-remember-me: 43200000

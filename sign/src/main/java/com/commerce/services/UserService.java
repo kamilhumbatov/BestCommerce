@@ -1,6 +1,6 @@
 package com.commerce.services;
 
-import com.commerce.common.models.User;
+import com.commerce.models.User;
 
 import java.util.Optional;
 

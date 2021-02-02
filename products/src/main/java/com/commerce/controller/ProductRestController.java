@@ -24,7 +24,7 @@ public class ProductRestController {
     @GetMapping("/{id}")
     public ResponseModel<Product> findById(
             @PathVariable long id) {
-        return ResponseModel.ok(productService.findById(Auditor.getCurrentAuditor().get(), id));
+        return ResponseModel.ok(productService.findById(id));
     }
 
     @PostMapping("/save")
@@ -38,6 +38,6 @@ public class ProductRestController {
             @RequestParam(value = "page", defaultValue = DEFAULT_PAGE_NUMBER) int page,
             @RequestParam(value = "size", defaultValue = DEFAULT_PAGE_SIZE) int size,
             @RequestParam(value = "sort", defaultValue = DEFAULT_PAGE_SORT) String sort) {
-        return ResponseModel.ok(productService.allProducts(Auditor.getCurrentAuditor().get(), page, size, sort));
+        return ResponseModel.ok(productService.allProducts(page, size, sort));
     }
 }

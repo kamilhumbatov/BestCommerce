@@ -10,6 +10,7 @@
         <module name="common" />
         <module name="products" />
         <module name="sign" />
+        <module name="simulation" />
         <module name="notification" />
       </profile>
     </annotationProcessing>
@@ -20,6 +21,7 @@
       <module name="notification" target="13" />
       <module name="products" target="13" />
       <module name="sign" target="13" />
+      <module name="simulation" target="13" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
@@ -29,6 +31,7 @@
       <module name="notification" options="-parameters" />
       <module name="products" options="-parameters" />
       <module name="sign" options="-parameters" />
+      <module name="simulation" options="-parameters" />
     </option>
   </component>
 </project>

@@ -1,6 +1,6 @@
 package com.commerce;
 
-import com.commerce.common.models.User;
+import com.commerce.models.User;
 import com.commerce.repository.UserRepository;
 import com.commerce.services.impl.UserServiceImpl;
 import org.junit.Before;

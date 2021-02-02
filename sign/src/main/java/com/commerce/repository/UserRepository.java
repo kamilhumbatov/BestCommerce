@@ -1,6 +1,6 @@
 package com.commerce.repository;
 
-import com.commerce.common.models.User;
+import com.commerce.models.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

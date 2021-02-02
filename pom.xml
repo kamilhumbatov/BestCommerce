@@ -8,6 +8,7 @@
         <module>sign</module>
         <module>products</module>
         <module>common</module>
+        <module>simulation</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -27,6 +28,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>io.springfox</groupId>

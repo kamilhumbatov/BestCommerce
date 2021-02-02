@@ -1,4 +1,4 @@
-package com.commerce.common.models;
+package com.commerce.models;
 
 import com.commerce.common.models.audit.DateAudit;
 import lombok.AllArgsConstructor;
@@ -34,11 +34,13 @@ public class User extends DateAudit {
 
     @NotBlank
     @Size(max = 20)
+    @Column(updatable = false)
     private String username;
 
     @Email
     @NotBlank
     @Size(max = 50)
+    @Column(updatable = false)
     private String email;
 
     @NotBlank

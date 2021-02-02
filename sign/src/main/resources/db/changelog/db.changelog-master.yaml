@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/db.changelog-create-user.yaml
+  - include:
+      file: db/changelog/db.changelog-create-role.yaml
+  - include:
+      file: db/changelog/db.changelog-create-user_role.yaml
+  - include:
+      file: db/changelog/db.changelog-insert-role.yaml

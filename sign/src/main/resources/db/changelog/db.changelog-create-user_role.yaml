@@ -1,0 +1,22 @@
+databaseChangeLog:
+  - changeSet:
+      id: user_role_30112020
+      author: commerce
+      changes:
+        - createTable:
+            tableName: t_user_roles
+            columns:
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: user_id_fk_01
+                    references: t_users(id)
+              - column:
+                  name: role_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: rol_id_fk_01
+                    references: t_roles(id)

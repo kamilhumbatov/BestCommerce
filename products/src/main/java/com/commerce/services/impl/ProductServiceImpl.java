@@ -7,6 +7,7 @@ import com.commerce.mapper.ProductMapper;
 import com.commerce.models.Product;
 import com.commerce.repository.ProductRepository;
 import com.commerce.services.ProductService;
+import com.commerce.util.Auditor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,16 +19,18 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
+    private final Auditor auditor;
     private final ProductMapper productMapper;
     private final ProductRepository productRepository;
 
-    private Product findByIdAndUser(Long id, long user) {
+    private Product findByIdAndUser(Long id, String user) {
         return productRepository.findByIdAndCreatedBy(id, user)
                 .orElseThrow(ProductNotFoundException::new);
     }
 
     @Override
-    public ProductDto findById(Long currentUser, long id) {
+    public ProductDto findById(long id) {
+        String currentUser= auditor.getUserName();
         if (currentUser != null) {
             Product product = findByIdAndUser(id, currentUser);
             return productMapper.sourceToDestination(product);
@@ -43,7 +46,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<ProductDto> allProducts(Long currentUser, int page, int size, String sortBy) {
+    public Page<ProductDto> allProducts(int page, int size, String sortBy) {
+        String currentUser= auditor.getUserName();
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
         return productRepository.findAllByCreatedBy(currentUser, pageable).map(
                 product -> productMapper.sourceToDestination(product));

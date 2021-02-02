@@ -1,7 +1,7 @@
 package com.commerce.repository;
 
 import com.commerce.common.enums.RoleName;
-import com.commerce.common.models.Role;
+import com.commerce.models.Role;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;

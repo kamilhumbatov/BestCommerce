@@ -1,12 +1,12 @@
 package com.commerce.services.impl;
 
 import com.commerce.common.enums.RoleName;
+import com.commerce.models.User;
 import com.commerce.dto.LoginRequest;
 import com.commerce.dto.SignUpRequest;
 import com.commerce.common.exception.models.EmailAddressAlreadyUseException;
 import com.commerce.common.exception.models.InvalidPasswordFormatException;
 import com.commerce.common.exception.models.UsernameAlreadyTakenException;
-import com.commerce.common.models.User;
 import com.commerce.security.jwt.JwtTokenProvider;
 import com.commerce.services.AuthService;
 import com.commerce.services.RoleService;

@@ -1,7 +1,6 @@
 package com.commerce.service;
 
 import com.commerce.common.exception.models.UserNotFoundException;
-import com.commerce.common.models.User;
 import com.commerce.dto.ProductDto;
 import com.commerce.mapper.ProductMapper;
 import com.commerce.models.Product;
@@ -9,13 +8,14 @@ import com.commerce.repository.ProductRepository;
 import com.commerce.services.impl.ProductServiceImpl;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
+import com.commerce.util.Auditor;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -36,12 +36,10 @@ import java.util.Optional;
 public class ProductServiceImplTest {
 
     private static final String USERNAME = "kamil";
-    private static final Long USER_ID = 5L;
     private static final Long PRODUCT_ID = 100L;
     private static final int PAGE_SORT_NUMBER = 1;
     private static final int PAGE_SORT_SIZE = 5;
 
-    private User user;
     private Product product;
     private ProductDto productDto;
 
@@ -51,30 +49,36 @@ public class ProductServiceImplTest {
     @MockBean
     private ProductRepository productRepository;
 
+    @MockBean
+    private Auditor auditor;
+
     @Autowired
     private ProductServiceImpl productService;
 
     @Before
     public void setUp() {
-        user = User.builder().id(USER_ID).username(USERNAME).email(USERNAME).build();
         productDto = ProductDto.builder().id(PRODUCT_ID).build();
         product = Product.builder().id(PRODUCT_ID).build();
     }
 
     @Test
     public void givenIdAndUser() {
-        when(productRepository.findByIdAndCreatedBy(PRODUCT_ID, USER_ID)).thenReturn(Optional.of(product));
+        when(productRepository.findByIdAndCreatedBy(PRODUCT_ID, USERNAME)).thenReturn(Optional.of(product));
         when(productMapper.sourceToDestination(product)).thenReturn(productDto);
+        when(auditor.getUserName()).thenReturn(USERNAME);
 
-        assertThat(productService.findById(USER_ID, PRODUCT_ID).getId()).isEqualTo(PRODUCT_ID);
-        verify(productRepository).findByIdAndCreatedBy(PRODUCT_ID, USER_ID);
+        assertThat(productService.findById(PRODUCT_ID).getId()).isEqualTo(PRODUCT_ID);
+        verify(productRepository).findByIdAndCreatedBy(PRODUCT_ID, USERNAME);
     }
 
     @Test
     public void givenIdUserNotFoundException() {
-        assertThatThrownBy(() -> productService.findById(null, PRODUCT_ID))
+        when(auditor.getUserName()).thenReturn(null);
+
+        assertThatThrownBy(() -> productService.findById(PRODUCT_ID))
                 .isInstanceOf(UserNotFoundException.class)
                 .hasMessage("User not found!");
+        verify(auditor,times(1)).getUserName();
     }
 
     @Test
@@ -87,20 +91,20 @@ public class ProductServiceImplTest {
         verify(productRepository).save(product);
     }
 
-
     @Test
     public void findAllPaginationAsc() {
         PageRequest pageRequest = PageRequest.of(PAGE_SORT_NUMBER, PAGE_SORT_SIZE, Sort.by(Sort.Order.asc("price")));
         Page<Product> expectedProduct = new PageImpl<>(Collections.singletonList(product));
 
-        when(productRepository.findAllByCreatedBy(USER_ID, pageRequest)).thenReturn(expectedProduct);
+        when(productRepository.findAllByCreatedBy(USERNAME, pageRequest)).thenReturn(expectedProduct);
+        when(auditor.getUserName()).thenReturn(USERNAME);
 
-        Page<ProductDto> expectedProductDto =productService.allProducts(USER_ID, PAGE_SORT_NUMBER, PAGE_SORT_SIZE, "price");
+        Page<ProductDto> expectedProductDto = productService.allProducts(PAGE_SORT_NUMBER, PAGE_SORT_SIZE, "price");
         assertThat(expectedProductDto.getContent()).isEqualTo(expectedProductDto.getContent());
         assertThat(expectedProductDto.getTotalElements()).isEqualTo(1);
         assertThat(expectedProductDto.getTotalPages()).isEqualTo(1);
 
-        verify(productRepository).findAllByCreatedBy(USER_ID, pageRequest);
+        verify(productRepository).findAllByCreatedBy(USERNAME, pageRequest);
     }
 
 }

@@ -2,7 +2,7 @@ package com.commerce;
 
 import com.commerce.common.enums.RoleName;
 import com.commerce.common.exception.models.RolenameInvalidException;
-import com.commerce.common.models.Role;
+import com.commerce.models.Role;
 import com.commerce.repository.RoleRepository;
 import com.commerce.services.RoleService;
 import com.commerce.services.impl.RoleServiceImpl;

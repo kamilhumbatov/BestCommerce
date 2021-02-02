@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - changeSet:
+      id: t_roles_271120202
+      author: commerce
+      changes:
+        - insert:
+            tableName: t_roles
+            columns:
+              - column:
+                  name: id
+                  value: 1
+              - column:
+                  name: name
+                  value: ROLE_ADMIN
+        - insert:
+            tableName: t_roles
+            columns:
+              - column:
+                  name: id
+                  value: 2
+              - column:
+                  name: name
+                  value: ROLE_MERCHANT

@@ -1,7 +1,7 @@
 package com.commerce.security.jwt;
 
 import com.commerce.common.exception.models.UserOrPasswordNotMatchException;
-import com.commerce.common.models.User;
+import com.commerce.models.User;
 import com.commerce.dto.LoginRequest;
 import com.commerce.services.UserService;
 import io.jsonwebtoken.*;
@@ -14,11 +14,15 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import io.jsonwebtoken.security.Keys;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class JwtTokenProvider {
+
+    private static final String NAME_KEY="name";
+    private static final String AUTHORITIES_KEY="role";
 
     @Value("${security.jwtProperties.secret}")
     private String jwtSecretKey;
@@ -38,13 +42,14 @@ public class JwtTokenProvider {
             Date now = new Date();
             Date expired = new Date(now.getTime() + jwtExpirationInMs);
             Map<String, Object> claims = new HashMap<>();
-            claims.put("id", user.getId());
+            claims.put(NAME_KEY, user.getName());
+            claims.put(AUTHORITIES_KEY, user.getRoles().iterator());
             return Jwts.builder()
                     .setClaims(claims)
                     .setSubject(user.getUsername())
                     .setIssuedAt(now)
                     .setExpiration(expired)
-                    .signWith(SignatureAlgorithm.HS512, jwtSecretKey)
+                    .signWith(Keys.hmacShaKeyFor(jwtSecretKey.getBytes()), SignatureAlgorithm.HS512)
                     .compact();
         } else {
             throw new UserOrPasswordNotMatchException();

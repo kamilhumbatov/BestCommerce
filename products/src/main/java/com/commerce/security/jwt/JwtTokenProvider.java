@@ -1,10 +1,21 @@
 package com.commerce.security.jwt;
 
+import com.commerce.security.UserPrincipal;
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
+
+import java.security.Key;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -14,13 +25,25 @@ public class JwtTokenProvider {
     @Value("${security.jwtProperties.secret}")
     private String jwtSecretKey;
 
-    public String getUserNameFromJwtToken(String token) {
-        return Jwts.parser().setSigningKey(jwtSecretKey).parseClaimsJws(token).getBody().getSubject();
+    private static final String ID_KEY = "id";
+    private static final String NAME_KEY = "name";
+    private static final String AUTHORITIES_KEY = "role";
+
+    public Authentication getAuthentication(String token) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(Keys.hmacShaKeyFor(jwtSecretKey.getBytes()))
+                .parseClaimsJws(token)
+                .getBody();
+        List<SimpleGrantedAuthority> authorities = Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
+        return new UsernamePasswordAuthenticationToken(claims.getSubject(), null, authorities);
     }
 
     public boolean validateJwtToken(String authToken) {
         try {
-            Jwts.parser().setSigningKey(jwtSecretKey).parseClaimsJws(authToken);
+            Jwts.parser().setSigningKey(Keys.hmacShaKeyFor(jwtSecretKey.getBytes()))
+                    .parseClaimsJws(authToken);
             return true;
         } catch (SignatureException e) {
             log.error("Invalid JWT signature: {}", e.getMessage());

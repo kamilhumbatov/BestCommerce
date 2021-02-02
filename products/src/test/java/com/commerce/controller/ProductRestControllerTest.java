@@ -4,6 +4,7 @@ import com.commerce.common.exception.models.ProductNotFoundException;
 import com.commerce.dto.ProductDto;
 import com.commerce.enums.PaymentOptions;
 import com.commerce.enums.ProductCategory;
+import com.commerce.models.Product;
 import com.commerce.services.ProductService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
@@ -24,6 +27,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.when;
@@ -38,12 +42,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class ProductRestControllerTest {
 
-    private static final Long USER_ID = 5L;
     private static final String USERNAME = "kamil";
     private static final Long PRODUCT_ID = 100L;
     private static final String PAGE_SORT_SIZE = "5";
-    private static final String PAGE_URL = "/product/list";
     private static final String PAGE_NUMBER = "page";
+    private static final String PAGE_NUMBER_VALUE = "1";
     private static final String PAGE_SIZE = "size";
     private static final String PAGE_SORT = "sort";
     private static final String ERROR_CODE = "$.status";
@@ -51,6 +54,7 @@ public class ProductRestControllerTest {
 
     private static final String API_GET = "/product/{id}";
     private static final String API_SAVE = "/product/save";
+    private static final String API_LIST = "/product/list";
 
     private ProductDto productDto;
     private ProductDto productAddDto;
@@ -90,7 +94,7 @@ public class ProductRestControllerTest {
     @Test
     @WithUserDetails("user@bestcommerce.com")
     public void findProductById() throws Exception {
-        when(productService.findById(USER_ID,PRODUCT_ID)).thenReturn(productDto);
+        when(productService.findById(PRODUCT_ID)).thenReturn(productDto);
 
         mockMvc.perform(MockMvcRequestBuilders
                 .get(API_GET, PRODUCT_ID)
@@ -109,13 +113,15 @@ public class ProductRestControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.status").exists());
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.id",is(100)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result.price",is(10)));
     }
 
     @Test
     @WithUserDetails("user@bestcommerce.com")
     public void findProductByIdReturnsNotFound() throws Exception {
-        when(productService.findById(USER_ID,PRODUCT_ID)).thenThrow(new ProductNotFoundException());
+        Long FACE_PRODUCT_ID=12345L;
+        when(productService.findById(FACE_PRODUCT_ID)).thenThrow(new ProductNotFoundException());
 
         mockMvc.perform(MockMvcRequestBuilders
                 .get("/product/12345")
@@ -128,12 +134,18 @@ public class ProductRestControllerTest {
     @Test
     @WithUserDetails("user@bestcommerce.com")
     public void retrieveAllProductCheckPageNumberBadRequest() throws Exception {
+        Page<ProductDto> expectedProduct = new PageImpl<>(Collections.singletonList(productDto));
+        when(productService.allProducts(
+                Integer.parseInt(PAGE_NUMBER_VALUE),
+                Integer.parseInt(PAGE_SORT_SIZE),"price")).thenReturn(expectedProduct);
+
         mockMvc.perform(MockMvcRequestBuilders
-                .get(PAGE_URL)
-                .param(PAGE_NUMBER, "-1")
+                .get(API_LIST)
+                .param(PAGE_NUMBER, PAGE_NUMBER_VALUE)
                 .param(PAGE_SIZE, PAGE_SORT_SIZE))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath(ERROR_CODE, is(HttpStatus.BAD_REQUEST.value())));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.result.totalElements", is(1)))
+                .andExpect(jsonPath("$.result.totalPages", is(1)));
     }
 
     private String asJsonString(final Object obj) throws JsonProcessingException {

@@ -1,8 +1,7 @@
 package com.commerce;
 
 import com.commerce.common.exception.models.UserOrPasswordNotMatchException;
-import com.commerce.common.exception.models.UsernameAlreadyTakenException;
-import com.commerce.common.models.User;
+import com.commerce.models.User;
 import com.commerce.dto.LoginRequest;
 import com.commerce.security.jwt.JwtTokenProvider;
 import com.commerce.services.UserService;
@@ -12,7 +11,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;

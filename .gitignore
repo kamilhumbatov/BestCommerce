@@ -27,3 +27,4 @@ sign/target/*
 products/target/*
 notification/target/*
 .idea/*
+logs/*

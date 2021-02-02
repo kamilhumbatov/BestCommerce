@@ -1,6 +1,0 @@
-com/commerce/UserServiceImplTest.class
-com/commerce/AuthServiceImplTest.class
-com/commerce/JwtTokenProviderTest.class
-com/commerce/TestConfiguration.class
-com/commerce/RoleServiceImplTest.class
-com/controller/AuthControllerTest.class

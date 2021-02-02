@@ -1,4 +1,4 @@
-package com.commerce.common.models;
+package com.commerce.models;
 
 import com.commerce.common.enums.RoleName;
 import lombok.Data;

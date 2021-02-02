@@ -1,0 +1,21 @@
+databaseChangeLog:
+  - changeSet:
+      id: roles_30112021
+      author: commerce
+      changes:
+        - createTable:
+            tableName: t_roles
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: role_id_pk01
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(20)
+                  constraints:
+                    nullable: false
