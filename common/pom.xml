@@ -8,7 +8,9 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
+    <properties>
+        <java.version>11</java.version>
+    </properties>
     <artifactId>common</artifactId>
     <dependencies>
         <dependency>
@@ -38,9 +40,11 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.7.0</version>
                 <configuration>
-                    <source>13</source>
-                    <target>13</target>
+                    <source>11</source>
+                    <target>11</target>
+                    <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
         </plugins>
