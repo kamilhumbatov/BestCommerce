@@ -5,10 +5,5 @@ jdk:
 script: ./mvnw clean install
 
 
-jobs:
-  include:
-    - stage: Test
-      script: ./mvnw clean test
-
 notification:
   email: kamilhumbatov@gmail.com
