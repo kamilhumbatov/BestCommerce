@@ -1,6 +1,6 @@
 language: java
 jdk:
-  - openjdk14
+  - openjdk11
 
 script: ./mvnw clean install mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V 
 
