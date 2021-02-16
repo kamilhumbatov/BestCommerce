@@ -4,6 +4,10 @@ jdk:
 
 script: ./mvnw clean install mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V 
 
-
+jobs:
+  include:
+    - stage: Test
+      script: ./mvnw clean test
+      
 notification:
   email: kamilhumbatov@gmail.com
