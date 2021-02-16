@@ -1,5 +1,5 @@
 # BestCommerce
-
+[![Build Status](https://travis-ci.com/kamilhumbatov/BestCommerce.svg?branch=main)](https://travis-ci.com/kamilhumbatov/BestCommerce)
 This is a sample Spring Boot/Maven Project.Consist of 3 microservices 
 * sign
 * products
