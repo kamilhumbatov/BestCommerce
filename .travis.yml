@@ -9,7 +9,9 @@ jdk:
 #  on:
 #    all_branches: true 
 #  skip_cleanup: true  
-      
+services:
+  - docker
+  
 env:
   - DOCKER_COMPOSE_VERSION=1.4.2
 
