@@ -7,9 +7,7 @@ deploy:
   api_key:
     secure: "d0943ce3-47cc-44a0-9c64-c81ced226c3c"
   on:
-    branches:    
-      only:      
-        - master   
+    all_branches: true 
       
 notification:
   email: kamilhumbatov@gmail.com
