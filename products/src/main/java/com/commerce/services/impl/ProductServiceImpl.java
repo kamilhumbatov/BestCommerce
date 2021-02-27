@@ -10,6 +10,9 @@ import com.commerce.repository.ProductRepository;
 import com.commerce.services.ProductService;
 import com.commerce.util.Auditor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,11 +23,14 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
+    private static final String PRODUCT_CACHE = "productCache";
+
     private final Auditor auditor;
     private final ProductMapper productMapper;
     private final ProductRepository productRepository;
 
-    private Product findById(Long id) {
+    @Cacheable(value = PRODUCT_CACHE, key = "#id")
+    public Product findById(Long id) {
         return productRepository.findById(id)
                 .orElseThrow(ProductNotFoundException::new);
     }
@@ -48,6 +54,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @CachePut(value = PRODUCT_CACHE, key = "#id", condition = "#result != null")
     public ProductDto save(ProductDto productDto) {
         Product product = productMapper.destinationToSource(productDto);
         productRepository.save(product);
@@ -55,6 +62,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @CacheEvict(value = PRODUCT_CACHE, key = "#id")
     public void deleteById(long id) {
         findById(id);
         productRepository.deleteById(id);

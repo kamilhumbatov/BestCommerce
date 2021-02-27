@@ -44,6 +44,27 @@ services:
     networks:
       - backend
 
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - 6379:6379
+    networks:
+      - backend
+
+  redis-gui:
+    image: erikdubbelboer/phpredisadmin
+    container_name: redis-gui
+    ports:
+      - 6380:80
+    depends_on:
+      - redis
+    networks:
+      - backend
+    environment:
+      - REDIS_1_HOST=redis
+      - REDIS_1_NAME=MyRedis
+
   sign:
     build: ./sign
     depends_on:
@@ -72,6 +93,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://db:${DATABASE_PORT}/${DATABASE_NAME}?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true
       SPRING_DATASOURCE_USERNAME: ${DATABASE_USER}
       SPRING_DATASOURCE_PASSWORD: ${DATABASE_PASSWORD}
+      REDIS_HOST: redis
 
   notification:
     build: ./notification
